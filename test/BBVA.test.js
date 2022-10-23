@@ -21,7 +21,6 @@ describe("Testing BBVA main smart contract", async function () {
     await erc20.addController(BBVA.address);
     await BBVA.addPointsToAcount(deployer, amountERC20token);
     await BBVA.addAdmin(deployer);
-    await BBVA.addReward();
   });
   describe("Get erc20 minted tokens", async function () {
     it("Should have amountERC20token minted", async function () {

@@ -1,9 +1,12 @@
 require("dotenv").config();
 require("@nomiclabs/hardhat-waffle");
 require("hardhat-deploy");
+require("dotenv").config();
+require("@nomiclabs/hardhat-etherscan");
 /** @type import('hardhat/config').HardhatUserConfig */
 const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "Your etherscan API key"
 module.exports = {
   solidity: {
     compilers: [
@@ -38,6 +41,12 @@ module.exports = {
         "7b64d97212ac176abebaee5002b0f924129774af5e2ddf2a27b503eaa9fbca29",
       ],
       chainId: 1337,
+    },
+  },
+  etherscan: {
+    // yarn hardhat verify --network <NETWORK> <CONTRACT_ADDRESS> <CONSTRUCTOR_PARAMETERS>
+    apiKey: {
+      goerli: ETHERSCAN_API_KEY,
     },
   },
   namedAccounts: {

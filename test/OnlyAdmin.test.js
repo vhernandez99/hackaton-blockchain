@@ -14,10 +14,18 @@ describe("Testing only admin functions", async function () {
     BBVA = await ethers.getContract("BBVA", deployer);
     erc721 = await ethers.getContract("BBVANFTRewards", deployer);
     erc20 = await ethers.getContract("BBVAToken", deployer);
+    await BBVA.addReward("86400", "1", "ipfs://");
+    await BBVA.addReward("86400", "1", "ipfs://");
+    const res = await BBVA.returnAllRewards();
+    console.log("res", res)
+    const reward1= await BBVA.getRewardById("1")
+    const reward2=await BBVA.getRewardById("2")
+    console.log(reward1.rewardId.toString())
+    console.log(reward2.rewardId.toString())
   });
   describe("Only admins should add rewards", async function () {
     it("Fails if you are not admin", async function () {
-      await expect(BBVA.addReward()).to.be.revertedWith(
+      await expect(BBVA.addReward("86400", "1", "ipfs://")).to.be.revertedWith(
         "Acount is not admin or owner"
       );
     });

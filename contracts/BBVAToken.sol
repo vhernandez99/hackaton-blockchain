@@ -6,14 +6,11 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
 contract BBVAToken is ERC20, ERC20Burnable, Ownable {
-    address public BBVA;
-
     mapping(address => bool) controllers;
 
-    constructor() ERC20("N2DRewards", "N2DR") {}
+    constructor() ERC20("BBVAToken", "BBVA") {}
 
     function mint(address to, uint256 amount) external {
-        require(controllers[msg.sender], "Only controllers can mint");
         _mint(to, amount);
     }
 
