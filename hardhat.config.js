@@ -45,7 +45,7 @@ module.exports = {
       default: 0, // here this will by default take the first account as deployer
     },
     user: {
-      default: 0,
+      default: 1,
     },
   },
 };

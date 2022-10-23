@@ -18,9 +18,6 @@ contract BBVANFTRewards is ERC721Enumerable, Ownable {
 
     constructor() ERC721("BBVA Rewards", "BBVARWRDS") {}
 
-    function _baseURI() internal view virtual override returns (string memory) {
-        return "ipfs://QmYB5uWZqfunBq7yWnamTqoXWBAHiQoirNLmuxMzDThHhi/";
-    }
 
     function mint(
         address _to,
@@ -37,6 +34,7 @@ contract BBVANFTRewards is ERC721Enumerable, Ownable {
         });
         _safeMint(_to, supply + 1);
     }
+
     function redeemReward(uint256 _tokenId) external {
         Token memory token = vault[_tokenId];
         address owner = ownerOf(_tokenId);
@@ -47,7 +45,7 @@ contract BBVANFTRewards is ERC721Enumerable, Ownable {
         require(owner == msg.sender, "You are not the owner of this reward");
         vault[_tokenId].rewardUsed = true;
     }
-    
+
     function tokenURI(uint256 _tokenId)
         public
         view

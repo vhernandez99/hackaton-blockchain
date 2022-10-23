@@ -13,7 +13,7 @@ contract BBVA is Ownable {
         uint256 cost;
         string metadata;
     }
-    uint256 public totalRewards  ;
+    uint256 public totalRewards;
     event NFTStaked(address owner, uint256 tokenId, uint256 value);
     event NFTUnstaked(address owner, uint256 tokenId, uint256 value);
     event Claimed(address owner, uint256 amount);
@@ -21,32 +21,57 @@ contract BBVA is Ownable {
     // reference to the Block NFT contract
     BBVANFTRewards nft;
     BBVAToken token;
-
-    // maps 
+    address private immutable i_owner;
+    // maps
     mapping(uint256 => Reward) public allRewards;
+    mapping(address => bool) public admins;
+
     constructor(BBVANFTRewards _nft, BBVAToken _token) {
+        i_owner = msg.sender;
         nft = _nft;
         token = _token;
-        addReward();
     }
 
-    function addReward() public // uint48 _expirationTime,
-    // string memory _name,
-    // uint256 _cost
+    modifier onlyAdminOrOwner() {
+        require(
+            (admins[msg.sender] == true || msg.sender == i_owner),
+            "Acount is not admin or owner"
+        );
+        _;
+    }
+
+    function addAdmin(address _admin) external {
+        admins[_admin] = true;
+    }
+
+    function addPointsToAcount(address _to, uint256 _amount)
+        external
+        onlyAdminOrOwner
+    {
+        token.mint(_to, _amount);
+    }
+
+    function addReward(
+        uint256 _expiration,
+        uint256 _cost,
+        string memory _metadata
+    )
+        public
+        onlyAdminOrOwner // uint48 _expirationTime,
     {
         totalRewards += 1;
         uint256 newRewardId = totalRewards;
         allRewards[newRewardId] = Reward({
             rewardId: newRewardId,
-            expiration: uint48(86400),
-            cost: 1000000000000000000,
-            metadata: "ipfs:///..."
+            expiration: uint48(_expiration),
+            cost: _cost,
+            metadata: _metadata
         });
     }
-
-    function deleteReward(uint256 rewardId) external {
+    function deleteReward(uint256 rewardId) external onlyAdminOrOwner {
         delete allRewards[rewardId];
     }
+
     //requires caller to approve _amount in erc20 token
     function buyReward(
         address account,

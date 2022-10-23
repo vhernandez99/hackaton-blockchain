@@ -13,7 +13,7 @@ contract BBVAToken is ERC20, ERC20Burnable, Ownable {
     constructor() ERC20("N2DRewards", "N2DR") {}
 
     function mint(address to, uint256 amount) external {
-        //require(controllers[msg.sender], "Only controllers can mint");
+        require(controllers[msg.sender], "Only controllers can mint");
         _mint(to, amount);
     }
 
@@ -24,7 +24,7 @@ contract BBVAToken is ERC20, ERC20Burnable, Ownable {
             super.burnFrom(account, amount);
         }
     }
-
+    
     function addController(address controller) external onlyOwner {
         controllers[controller] = true;
     }
